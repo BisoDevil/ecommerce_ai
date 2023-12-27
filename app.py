@@ -9,7 +9,7 @@ import requests
 import g4f
 import rem_background
 import os
-# for remove background
+from werkzeug.utils import secure_filename
 from PIL import Image
 import zipfile
 import uuid
@@ -113,7 +113,7 @@ def remove_background():
     # Preprocess the image
     image = rem_background.removeBackground(Image.open(image_file))
     
-    filename = str(uuid.uuid4()) + '.png'  # Generate a unique filename
+    filename = secure_filename(image_file.filename) # Generate a unique filename
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)  # Define the path to save the file
     
     image.save(file_path) # Save the file to the specified path
