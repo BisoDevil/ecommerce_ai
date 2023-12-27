@@ -119,7 +119,7 @@ def remove_background():
     image.save(file_path) # Save the file to the specified path
     download_url = request.host_url + file_path 
     # Return the image as a response
-    return jsonify({'image': download_url})
+    return jsonify({'image': send_file(file_path, mimetype='image/jpeg', as_attachment=True)})
     
 
 
