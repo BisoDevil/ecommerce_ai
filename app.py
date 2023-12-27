@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify,render_template,send_file
+from flask import Flask, request, jsonify,render_template,url_for
 from joblib import load
 import re
 from bs4 import BeautifulSoup
@@ -114,12 +114,12 @@ def remove_background():
     image = rem_background.removeBackground(Image.open(image_file))
     
     filename = secure_filename(image_file.filename) # Generate a unique filename
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)  # Define the path to save the file
+    file_path =os.path.join(app.root_path, "static/uploads/", file_name)
     
     image.save(file_path) # Save the file to the specified path
-    download_url = request.host_url + file_path 
+    # download_url = request.host_url + file_path 
     # Return the image as a response
-    return jsonify({'image': send_file(file_path, mimetype='image/jpeg', as_attachment=True)})
+    return jsonify({'image':file_path})
     
 
 
