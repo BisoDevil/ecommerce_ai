@@ -11,8 +11,7 @@ import rem_background
 import os
 from werkzeug.utils import secure_filename
 from PIL import Image
-import zipfile
-import uuid
+
 nltk.download('stopwords')
 
 app = Flask(__name__,template_folder='templates')
@@ -20,16 +19,6 @@ app = Flask(__name__,template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 
-# def unzip_file(zip_file_path, destination_directory):
-#     with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-#         zip_ref.extractall(destination_directory)
-        
-
-# destination_directory = os.path.dirname(os.path.abspath(__file__))
-
-# zip_file_path = f'{destination_directory}/model.joblib.zip'
-# # destination_directory = './'
-# unzip_file(zip_file_path, destination_directory)
 
 # # Load the saved model
 # model = load('model.joblib')
