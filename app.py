@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify,render_template,url_for
+from flask import Flask, request, jsonify,render_template
 from joblib import load
 import re
 from bs4 import BeautifulSoup
@@ -16,7 +16,8 @@ import uuid
 nltk.download('stopwords')
 
 app = Flask(__name__,template_folder='templates')
-app.config["UPLOAD_FOLDER"] = "uploads/"
+
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 
 # def unzip_file(zip_file_path, destination_directory):
@@ -114,12 +115,13 @@ def remove_background():
     image = rem_background.removeBackground(Image.open(image_file))
     
     filename = secure_filename(image_file.filename) # Generate a unique filename
-    file_path =os.path.join(app.root_path, "static/uploads/", filename)
+    file_path = os.path.join('static', 'uploads', filename)
+    
     
     image.save(file_path) # Save the file to the specified path
-    # download_url = request.host_url + file_path 
+    download_url = request.host_url + file_path 
     # Return the image as a response
-    return jsonify({'image':file_path})
+    return jsonify({'image':download_url})
     
 
 
