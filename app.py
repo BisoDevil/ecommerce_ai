@@ -55,26 +55,27 @@ def clean_text(text):
     return text
 
 # Define the API route
-# @app.route('/predict', methods=['POST'])
-# def predict():
-#     # Get the text input from the request
-#     texts = request.json['texts']
-#     # Preprocess the text
-#     preprocessed_texts = []
-#     for text in texts:
-#         preprocessed_texts.append(clean_text(text))
+@app.route('/predict', methods=['POST'])
+def predict():
+    return jsonify({'category': "Test"})
+    # # Get the text input from the request
+    # texts = request.json['texts']
+    # # Preprocess the text
+    # preprocessed_texts = []
+    # for text in texts:
+    #     preprocessed_texts.append(clean_text(text))
 
-#     # Vectorize the preprocessed text
-#     text_vector = vectorizer.transform(preprocessed_texts)
+    # # Vectorize the preprocessed text
+    # text_vector = vectorizer.transform(preprocessed_texts)
     
 
-#     # Make the prediction
-#     categories = model.predict(text_vector)
-#     ex = []
-#     for i in categories:
-#         ex.append(str(i))
-#     # Return the predicted category as JSON response
-#     return jsonify({'category': ex})
+    # # Make the prediction
+    # categories = model.predict(text_vector)
+    # ex = []
+    # for i in categories:
+    #     ex.append(str(i))
+    # # Return the predicted category as JSON response
+    # return jsonify({'category': ex})
 
 
 @app.route('/generate', methods=['POST'])
@@ -110,7 +111,7 @@ def remove_background():
     # Get the image file from the request
     image_file = request.files['image']
     # Preprocess the image
-    image = rem_background.removeBackground(image_file)
+    image = rem_background.removeBackground(Image.open(image_file))
     # Save the preprocessed image
     image.save('image.png')
     # Return the image as a response
