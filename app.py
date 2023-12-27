@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify,render_template,send_from_directory
+from flask import Flask, request, jsonify,render_template
 from joblib import load
 import re
 from bs4 import BeautifulSoup
@@ -125,9 +125,7 @@ def remove_background():
     
 
 
-@app.route('/uploads/<filename>')
-def serve_uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 
 @app.route('/', methods=['GET'])
