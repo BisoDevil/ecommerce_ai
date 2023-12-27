@@ -16,7 +16,7 @@ import uuid
 nltk.download('stopwords')
 
 app = Flask(__name__,template_folder='templates')
-
+app.config["UPLOAD_FOLDER"] = "uploads/"
 
 
 # def unzip_file(zip_file_path, destination_directory):
@@ -114,7 +114,7 @@ def remove_background():
     image = rem_background.removeBackground(Image.open(image_file))
     
     filename = str(uuid.uuid4()) + '.png'  # Generate a unique filename
-    file_path = os.path.join('uploads', filename)  # Define the path to save the file
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)  # Define the path to save the file
     
     image.save(file_path) # Save the file to the specified path
     download_url = request.host_url + file_path 
