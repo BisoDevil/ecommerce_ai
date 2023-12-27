@@ -7,4 +7,5 @@ nltk==3.8.1
 scikit_learn==1.3.0
 g4f
 huggingface_hub
-transformers
+uuid
+scikit-image

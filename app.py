@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify,render_template
+from flask import Flask, request, jsonify,render_template,send_file
 from joblib import load
 import re
 from bs4 import BeautifulSoup
@@ -12,7 +12,7 @@ import os
 # for remove background
 from PIL import Image
 import zipfile
-
+import uuid
 nltk.download('stopwords')
 
 app = Flask(__name__,template_folder='templates')
@@ -112,8 +112,12 @@ def remove_background():
     image_file = request.files['image']
     # Preprocess the image
     image = rem_background.removeBackground(Image.open(image_file))
-    # Save the preprocessed image
-    image.save('image.png')
+    
+    filename = str(uuid.uuid4()) + '.png'  # Generate a unique filename
+    file_path = os.path.join('uploads', filename)  # Define the path to save the file
+    
+    image.save(file_path) # Save the file to the specified path
+    download_url = request.host_url + file_path 
     # Return the image as a response
     return jsonify({'image': 'image.png'})
     
@@ -130,5 +134,5 @@ def index():
 
 if __name__ == '__main__':
     
-    # app.run(debug=True,)
-    app.run(debug=True,host='0.0.0.0',port=5000)
+    app.run(debug=True,)
+    # app.run(debug=True,host='0.0.0.0',port=5000)
