@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from huggingface_hub import hf_hub_download
 from torch.autograd import Variable
 from PIL import Image
-
+from transformers import pipeline
 
 captioner = pipeline(
     "image-to-text",
