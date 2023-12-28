@@ -8,11 +8,16 @@ from torch.autograd import Variable
 from PIL import Image
 
 
-
+captioner = pipeline(
+    "image-to-text",
+    model="Salesforce/blip-image-captioning-base",
+    prompt="The main subject of this picture is a"
+)
 
 def removeBackground(image):
     image = image.convert("RGB")
-    
+    caption = captioner(image, max_new_tokens=20)[0]["generated_text"].lower().replace("The main subject of this picture is a".lower(), "").strip()
+
     if not os.path.exists("saved_models"):
         os.mkdir("saved_models")
         os.mkdir("git")
@@ -141,4 +146,4 @@ def removeBackground(image):
     cropped = im_rgb.copy()
     cropped.putalpha(mask)
 
-    return cropped
+    return cropped , caption

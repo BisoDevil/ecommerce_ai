@@ -101,7 +101,7 @@ def remove_background():
     # Get the image file from the request
     image_file = request.files['image']
     # Preprocess the image
-    image = rem_background.removeBackground(Image.open(image_file))
+    image,pred = rem_background.removeBackground(Image.open(image_file))
     
     filename = secure_filename(image_file.filename) # Generate a unique filename
     file_path = os.path.join('static', 'uploads', filename)
@@ -110,7 +110,7 @@ def remove_background():
     image.save(file_path) # Save the file to the specified path
     download_url = request.host_url + file_path 
     # Return the image as a response
-    return jsonify({'image':download_url})
+    return jsonify({'image':download_url,'pred':pred})
     
 
 
