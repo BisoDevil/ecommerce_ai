@@ -88,9 +88,9 @@ def generate():
             }
             ]
                 }
-        res = requests.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyASi5HIYqtFix7TSYHgimaMuYiXIyJhH_U',json=body)
+        res = requests.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyASi5HIYqtFix7TSYHgimaMuYiXIyJhH_U',json=body,timeout=10)
         if res.status_code != 200:
-            raise Exception(f'Request failed with status code {res.status_code}')
+            raise Exception(f'Request failed with status code {res.text}')
         chunks = []
         for item in res.json()['candidates']:
             for part in item['content']['parts']:
