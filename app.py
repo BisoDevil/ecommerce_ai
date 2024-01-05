@@ -70,55 +70,50 @@ def predict():
 
 
 @app.route('/generate', methods=['POST'])
-def generate():
-    try:
-        text = request.json['text']
-        bullets = request.json['bullet']
+async def generate():
+    text = request.json['text']
+    bullets = request.json['bullet']
+   
     
-        
-        prefix = f'As a professional product content specialist at amazon ecommerce, I would like to generate a three product titles based on ِAmazon title guidelines in 150 characters, {bullets} marketing feature bullets, rich description over 2000 character, product attributes. Based on the below info:'    
-        body = {
-        "contents": [
+    prefix = f'As a professional product content specialist at amazon ecommerce, I would like to generate a three product titles based on ِAmazon title guidelines in 150 characters, {bullets} marketing feature bullets, rich description over 2000 character, product attributes. Based on the below info:'    
+#     body = {
+#     "contents": [
+#         {
+#             "parts": [
+#                 {
+#                     "text": f'{prefix}\n{text}'
+#                 }
+#             ]
+#         }
+#     ]
+# }
+#     res = requests.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyASi5HIYqtFix7TSYHgimaMuYiXIyJhH_U',json=body)
+#     chunks = []
+#     for item in res.json()['candidates']:
+#         for part in item['content']['parts']:
+#             chunks.append(part['text'])
+
+
+
+
+    response = g4f.ChatCompletion.create(
+        model=g4f.models.default,
+        messages=[
             {
-                "parts": [
-                    {
-                        "text": f'{prefix}\n{text}'
-                    }
-                ]
-            }
-            ]
+                    "role": "user",
+                    "content":  f'{prefix} {text}'
                 }
-        res = requests.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyASi5HIYqtFix7TSYHgimaMuYiXIyJhH_U',json=body,timeout=10)
-        if res.status_code != 200:
-            raise Exception(f'Request failed with status code {res.text}')
-        chunks = []
-        for item in res.json()['candidates']:
-            for part in item['content']['parts']:
-                chunks.append(part['text'])
+        ],
+        stream=True,
+        ignore_stream_and_auth=True
+    )
 
+    chunks = []
 
+    for chunk in response:
+        chunks.append(chunk)
 
-
-        # response = g4f.ChatCompletion.create(
-        #     model=g4f.models.default,
-        #     messages=[
-        #         {
-        #                 "role": "user",
-        #                 "content":  f'{prefix} {text}'
-        #             }
-        #     ],
-        #     stream=True,
-        #     ignore_stream_and_auth=True
-        # )
-
-        # chunks = []
-
-        # for chunk in response:
-        #     chunks.append(chunk)
-
-        return jsonify({'message': ''.join(chunks).strip()})
-    except Exception as e:
-        return jsonify({'message': str(e)})
+    return jsonify({'message': ''.join(chunks).strip()})
 
 
 @app.route('/remove_background', methods=['POST'])
