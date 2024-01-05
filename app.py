@@ -89,7 +89,7 @@ async def generate():
 }
     res = requests.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyASi5HIYqtFix7TSYHgimaMuYiXIyJhH_U',json=body)
     chunks = []
-    for item in res.json()['candidates' ]:
+    for item in res.json()['candidates']:
         for part in item['content']['parts']:
             chunks.append(part['text'])
 
