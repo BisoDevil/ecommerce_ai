@@ -11,6 +11,7 @@ import rem_background
 import os
 from werkzeug.utils import secure_filename
 from PIL import Image
+import requests
 
 nltk.download('stopwords')
 
@@ -75,23 +76,42 @@ async def generate():
    
     
     prefix = f'As a professional product content specialist at amazon ecommerce, I would like to generate a three product titles based on ِAmazon title guidelines in 150 characters, {bullets} marketing feature bullets, rich description over 2000 character, product attributes. Based on the below info:'    
-    
-    response = g4f.ChatCompletion.create(
-        model=g4f.models.default,
-        messages=[
-            {
-                    "role": "user",
-                    "content":  f'{prefix} {text}'
+    body = {
+    "contents": [
+        {
+            "parts": [
+                {
+                    "text": f'{prefix}\n{text}'
                 }
-        ],
-        stream=True,
-        ignore_stream_and_auth=True
-    )
-
+            ]
+        }
+    ]
+}
+    res = requests.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyASi5HIYqtFix7TSYHgimaMuYiXIyJhH_U',json=body)
     chunks = []
+    for item in res.json()['candidates' ]:
+        for part in item['content']['parts']:
+            chunks.append(part['text'])
 
-    for chunk in response:
-        chunks.append(chunk)
+
+
+
+    # response = g4f.ChatCompletion.create(
+    #     model=g4f.models.default,
+    #     messages=[
+    #         {
+    #                 "role": "user",
+    #                 "content":  f'{prefix} {text}'
+    #             }
+    #     ],
+    #     stream=True,
+    #     ignore_stream_and_auth=True
+    # )
+
+    # chunks = []
+
+    # for chunk in response:
+    #     chunks.append(chunk)
 
     return jsonify({'message': ''.join(chunks).strip()})
 
